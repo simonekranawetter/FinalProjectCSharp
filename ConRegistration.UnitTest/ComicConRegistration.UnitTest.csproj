@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConRegistration\ConRegistration.csproj" />
+    <ProjectReference Include="..\ConRegistration\ComicConRegistration.csproj" />
   </ItemGroup>
 
 </Project>
