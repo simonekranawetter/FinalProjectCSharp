@@ -22,5 +22,15 @@ namespace ComicConRegistration
         {
             _participantList.Add(participant);
         }
+
+        public void Remove(int index)
+        {
+            _participantList.RemoveAt(index);
+        }
+
+        public Guid CreateDiscountCode()
+        {
+            return new Guid();
+        }
     }
 }
