@@ -30,7 +30,8 @@ namespace ComicConRegistration
 
         public static Guid CreateDiscountCode()
         {
-            return new Guid();
+            var discountCode = Guid.NewGuid();
+            return discountCode;
         }
 
         public void Save(string path)

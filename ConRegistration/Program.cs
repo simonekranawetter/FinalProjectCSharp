@@ -16,15 +16,25 @@ while (runProgram)
             comicCon.AddParticipant(participant);
             break;
         case 2:
+            var index = menu.RemoveParticipant(comicCon.Participants);
+            comicCon.Remove(index);
             break;
         case 3:
+            menu.ListParticipants(comicCon.Participants);
             break;
         case 4:
             comicCon = menu.LoadTextFile();
             break;
         case 5:
+            var path = menu.SaveTextFile();
+            comicCon.Save(path);
             break;
         case 6:
+            menu.DiscountCode();
+            break;
+        case 7:
+            runProgram = false;
+            Console.WriteLine("Bye! Have a great day! (^_^) c[_]");
             break;
         default:
             break;

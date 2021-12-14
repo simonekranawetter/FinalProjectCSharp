@@ -9,13 +9,14 @@ namespace ComicConRegistration
             while (true)
             {
                 ForegroundColor = ConsoleColor.Magenta;
-                WriteLine("   ~~Welcome to ComicCon 2021~~      \n");
+                WriteLine("\n\n   ~~Welcome to ComicCon 2021~~      \n");
                 WriteLine("1. Add a new Participant to the Con");
                 WriteLine("2. Remove Participant from the Con");
                 WriteLine("3. List all Participants of the Con");
                 WriteLine("4. Load ComicCon Registration File");
                 WriteLine("5. Save to File");
-                WriteLine("6. Exit the Program");
+                WriteLine("6. Create a discount code");
+                WriteLine("7. Exit the Program");
 
                 var input = ReadLine();
                 Clear();
@@ -36,26 +37,46 @@ namespace ComicConRegistration
             }
         }
 
-        internal Participant AddParticipant()
+        internal Participant AddParticipant() //TODO: hello there readline null references. (╯°□°）╯︵ ┻━┻
         {
             WriteLine("Enter Participant information for the ComicCon attendee patch!\n");
 
             Write("First Name:");
-            var firstName = ReadLine();
+            var firstName = ReadLine().Trim();
 
             Write("Last Name:");
-            var lastName = ReadLine();
+            var lastName = ReadLine().Trim();
 
             Write("Email:");
-            var email = ReadLine();
+            var email = ReadLine().Trim();
 
             Write("Favorite Superhero:");
-            var favoriteSuperhero = ReadLine();
+            var favoriteSuperhero = ReadLine().Trim();
 
             Write("Favorite Quote:");
-            var favoriteQuote = ReadLine();
+            var favoriteQuote = ReadLine().Trim();
 
             return new Participant(firstName, lastName, email, favoriteSuperhero, favoriteQuote);
+        }
+
+        internal int RemoveParticipant(List<Participant> participants)
+        {
+            ListParticipants(participants);
+            WriteLine("Enter the index of the participant you'd like to remove");
+
+            int index = int.Parse(ReadLine());
+
+            return index;
+        }
+
+        internal void ListParticipants(List<Participant> particpants)
+        {
+            int index = 0;
+            foreach (var participant in particpants)
+            {
+                WriteLine($"{index}. - {participant.FirstName} {participant.LastName}, {participant.Email}\n\n");
+                index++;
+            }
         }
 
         internal ComicCon LoadTextFile()
@@ -84,6 +105,22 @@ namespace ComicConRegistration
             }
 
             return comicCon;
+        }
+
+        internal string SaveTextFile()
+        {
+            ForegroundColor = ConsoleColor.Green;
+            WriteLine("Please enter a file path:");
+            ResetColor ();
+            var path = ReadLine();
+
+            return path;
+        }
+        
+        internal void DiscountCode()
+        {
+            WriteLine("Send this discount code to participant if requested");
+            WriteLine(ComicCon.CreateDiscountCode());
         }
     }
 }
