@@ -10,10 +10,10 @@ namespace ComicConRegistration.UnitTest
         [Fact]
         public void CreateComicConTest()
         {
-        //Arrange
-        var expectedType = typeof(ComicCon);
-        //Act
-        var con = new ComicCon();
+            //Arrange
+            var expectedType = typeof(ComicCon);
+            //Act
+            var con = new ComicCon();
             //Assert
             Assert.IsType(expectedType, con);
         }
@@ -68,12 +68,11 @@ namespace ComicConRegistration.UnitTest
             //Arrange
             var comicCon = new ComicCon();
             //Act
-            var result = comicCon.CreateDiscountCode().ToString();
+            var result = ComicCon.CreateDiscountCode().ToString();
 
             //Assert
             Assert.True(Guid.TryParse(result, out _));
         }
-
     }
 
 }

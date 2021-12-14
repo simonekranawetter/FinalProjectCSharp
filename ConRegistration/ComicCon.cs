@@ -28,9 +28,22 @@ namespace ComicConRegistration
             _participantList.RemoveAt(index);
         }
 
-        public Guid CreateDiscountCode()
+        public static Guid CreateDiscountCode()
         {
             return new Guid();
+        }
+
+        public void Save(string path)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var participant in _participantList)
+            {
+                 sb.AppendLine($"{participant.FirstName} {participant.LastName} {participant.Email} {participant.FavoriteSuperhero} {participant.FavoriteQuote}");
+            }
+
+            var inputToSave = sb.ToString();
+            File.WriteAllText(path, inputToSave);
         }
     }
 }
