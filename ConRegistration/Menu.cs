@@ -19,7 +19,7 @@ namespace ComicConRegistration
                 WriteLine("4. Load ComicCon Registration File");
                 WriteLine("5. Save to File");
                 WriteLine("6. Create a discount code");
-                WriteLine("7. Exit the Program");
+                WriteLine("7. Exit the Program\n\n");
 
                 var input = ReadLine();
                 Clear();
@@ -43,26 +43,45 @@ namespace ComicConRegistration
         /// Asking the user for input to add a participant to the list.
         /// </summary>
         /// <returns>A new participant object</returns>
-        internal Participant AddParticipant() //TODO: hello there readline null references. (╯°□°）╯︵ ┻━┻
-        {
+        internal Participant AddParticipant()         {
             WriteLine("Enter Participant information for the ComicCon attendee patch!\n");
 
             Write("First Name:");
             var firstName = ReadLine();
+            while (string.IsNullOrEmpty(firstName))
+            {
+                ErrorMessage("First Name is required!");
+                firstName = ReadLine();
+            }
+            firstName.Trim();
 
             Write("Last Name:");
             var lastName = ReadLine();
+            while (string.IsNullOrEmpty(lastName))
+            {
+                ErrorMessage("Last Name is required!");
+                lastName = ReadLine();
+            }
+            lastName.Trim();
 
             Write("Email:");
             var email = ReadLine();
+            while (string.IsNullOrEmpty(email))
+            {
+                ErrorMessage("Email is required!");
+                email = ReadLine();
+            }
+            email.Trim();
 
             Write("Favorite Superhero:");
-            var favoriteSuperhero = ReadLine();
+            var favoriteSuperhero = ReadLine() ?? "not specified";
+            favoriteSuperhero.Trim();
 
             Write("Favorite Quote:");
-            var favoriteQuote = ReadLine();
+            var favoriteQuote = ReadLine() ?? "All your base are belong to us";
+            favoriteQuote.Trim();
 
-            return new Participant(firstName.Trim(), lastName.Trim(), email.Trim(), favoriteSuperhero.Trim(), favoriteQuote.Trim());
+            return new Participant(firstName, lastName, email, favoriteSuperhero, favoriteQuote);
         }
         /// <summary>
         /// Lists the participants entered so far and lets the user pick the index of the desired entry
@@ -104,6 +123,10 @@ namespace ComicConRegistration
                 WriteLine($"{index}. - {participant.FirstName} {participant.LastName}, {participant.Email}\n\n");
                 index++;
             }
+            if (particpants.Count == 0)
+            {
+                WriteLine("You haven't added any participants yet");
+            }
         }
         /// <summary>
         /// Asks the user for the file path to a previously saved copy
@@ -116,7 +139,7 @@ namespace ComicConRegistration
             WriteLine("Enter your file path:");
             ResetColor();
             var path = ReadLine(); //TODO: handle possible error here!
-           
+
             string[] lines = File.ReadAllLines(path);
 
             var comicCon = new ComicCon();
@@ -130,8 +153,8 @@ namespace ComicConRegistration
                 var favoriteSuperhero = input[3];
                 var favoriteQuote = input[4];
 
-                var participant = new Participant (firstName,lastName,email,favoriteSuperhero,favoriteQuote);
-                comicCon.AddParticipant (participant);
+                var participant = new Participant(firstName, lastName, email, favoriteSuperhero, favoriteQuote);
+                comicCon.AddParticipant(participant);
             }
 
             return comicCon;
@@ -145,8 +168,8 @@ namespace ComicConRegistration
             WriteLine("Save a personal copy of the registration to your computer\n");
             ForegroundColor = ConsoleColor.Green;
             WriteLine("Please enter a file path:");
-            ResetColor ();
-            var path = ReadLine();
+            ResetColor();
+            var path = ReadLine(); //TODO: Handle the null reference here!
 
             return path;
         }
@@ -166,7 +189,22 @@ namespace ComicConRegistration
         {
             ForegroundColor = ConsoleColor.DarkRed;
             WriteLine(message);
-            ResetColor();
+            ForegroundColor = ConsoleColor.Magenta;
+        }
+        /// <summary>
+        /// Handles the possibility of nullable inputs
+        /// </summary>
+        /// <param name="input">Requires the user to enter something</param>
+        /// <param name="message">Specifies the error message displayed with the error</param>
+        /// <returns>The required input after whitespace is removed</returns>
+        private static string RequiresInput(string input, string message)
+        {   
+            while (string.IsNullOrEmpty(input))
+            {
+                ErrorMessage(message);
+                input = ReadLine(); //TODO: Figure out how to make this work!
+            }
+            return input.Trim();
         }
     }
 }
