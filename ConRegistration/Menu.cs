@@ -3,7 +3,10 @@
 namespace ComicConRegistration
 {
     internal class Menu
-    {
+    {   /// <summary>
+        /// Gives the user different choices to add, remove and display all participants. Saving and loading a text file and creating a discount code.
+        /// </summary>
+        /// <returns>Preferred menu choice</returns>
         public int MainMenu()
         {
             while (true)
@@ -33,42 +36,66 @@ namespace ComicConRegistration
 
                     }
                 }
-                WriteLine("Hi mom!"); //TODO: fix error handling here!
+                ErrorMessage("Please input a number from 1 - 7 to chose a menu option");
             }
         }
-
+        /// <summary>
+        /// Asking the user for input to add a participant to the list.
+        /// </summary>
+        /// <returns>A new participant object</returns>
         internal Participant AddParticipant() //TODO: hello there readline null references. (╯°□°）╯︵ ┻━┻
         {
             WriteLine("Enter Participant information for the ComicCon attendee patch!\n");
 
             Write("First Name:");
-            var firstName = ReadLine().Trim();
+            var firstName = ReadLine();
 
             Write("Last Name:");
-            var lastName = ReadLine().Trim();
+            var lastName = ReadLine();
 
             Write("Email:");
-            var email = ReadLine().Trim();
+            var email = ReadLine();
 
             Write("Favorite Superhero:");
-            var favoriteSuperhero = ReadLine().Trim();
+            var favoriteSuperhero = ReadLine();
 
             Write("Favorite Quote:");
-            var favoriteQuote = ReadLine().Trim();
+            var favoriteQuote = ReadLine();
 
-            return new Participant(firstName, lastName, email, favoriteSuperhero, favoriteQuote);
+            return new Participant(firstName.Trim(), lastName.Trim(), email.Trim(), favoriteSuperhero.Trim(), favoriteQuote.Trim());
         }
-
+        /// <summary>
+        /// Lists the participants entered so far and lets the user pick the index of the desired entry
+        /// </summary>
+        /// <param name="participants">The list of participants</param>
+        /// <returns>Removes the desired index from the list</returns>
         internal int RemoveParticipant(List<Participant> participants)
         {
             ListParticipants(participants);
             WriteLine("Enter the index of the participant you'd like to remove");
+            while (true)
+            {
+                var index = ReadLine();
 
-            int index = int.Parse(ReadLine());
+                if (!string.IsNullOrEmpty(index))
+                {
+                    try
+                    {
+                        var entryIndex = int.Parse(index);
 
-            return index;
+                        return entryIndex;
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                ErrorMessage("Enter the number of the entry you would like to remove");
+            }
         }
-
+        /// <summary>
+        /// Printing a list of participants to the console. Only relevant information (Name and email) and an index for easy selection is printed 
+        /// </summary>
+        /// <param name="particpants"></param>
         internal void ListParticipants(List<Participant> particpants)
         {
             int index = 0;
@@ -78,16 +105,19 @@ namespace ComicConRegistration
                 index++;
             }
         }
-
+        /// <summary>
+        /// Asks the user for the file path to a previously saved copy
+        /// </summary>
+        /// <returns>A detailed list with all the information saved in the file</returns>
         internal ComicCon LoadTextFile()
         {
-            WriteLine("Save a personal copy of the registration to your computer\n");
+            WriteLine("Load a copy of the registration previously saved to your computer");
             ForegroundColor = ConsoleColor.Green;
             WriteLine("Enter your file path:");
             ResetColor();
             var path = ReadLine(); //TODO: handle possible error here!
            
-            string[]? lines = File.ReadAllLines(path);
+            string[] lines = File.ReadAllLines(path);
 
             var comicCon = new ComicCon();
 
@@ -106,9 +136,13 @@ namespace ComicConRegistration
 
             return comicCon;
         }
-
+        /// <summary>
+        /// Asks user to enter a file path to the console
+        /// </summary>
+        /// <returns>A text file at the desired path</returns>
         internal string SaveTextFile()
         {
+            WriteLine("Save a personal copy of the registration to your computer\n");
             ForegroundColor = ConsoleColor.Green;
             WriteLine("Please enter a file path:");
             ResetColor ();
@@ -116,11 +150,23 @@ namespace ComicConRegistration
 
             return path;
         }
-        
+        /// <summary>
+        /// Prints a discount code to the console
+        /// </summary>
         internal void DiscountCode()
         {
             WriteLine("Send this discount code to participant if requested");
             WriteLine(ComicCon.CreateDiscountCode());
+        }
+        /// <summary>
+        /// Prints a red error message to the console
+        /// </summary>
+        /// <param name="message">A string specifying the error encountered</param>
+        private static void ErrorMessage(string message)
+        {
+            ForegroundColor = ConsoleColor.DarkRed;
+            WriteLine(message);
+            ResetColor();
         }
     }
 }

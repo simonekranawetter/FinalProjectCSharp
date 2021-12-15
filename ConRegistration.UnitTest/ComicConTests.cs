@@ -6,7 +6,9 @@ using Xunit;
 namespace ComicConRegistration.UnitTest
 {
     public class ComicConTests
-    {
+    {   /// <summary>
+        /// Checks that the type of ComicCon is ComicCon
+        /// </summary>
         [Fact]
         public void CreateComicConTest()
         {
@@ -17,7 +19,9 @@ namespace ComicConRegistration.UnitTest
             //Assert
             Assert.IsType(expectedType, con);
         }
-
+        /// <summary>
+        /// Checks that the adding functionality works as intended
+        /// </summary>
         [Fact]
         public void AddParticipantToComicCon()
         {
@@ -38,7 +42,9 @@ namespace ComicConRegistration.UnitTest
             //Assert
             Assert.Equal(expectedNumberOfParticipants, comicCon.Participants.Count);
         }
-
+        /// <summary>
+        /// Checks that the removing functionality works as intended
+        /// </summary>
         [Fact]
         public void RemoveParticipantFromComicCon()
         {
@@ -61,7 +67,9 @@ namespace ComicConRegistration.UnitTest
             //Assert
             Assert.Equal(expectedNumberOfParticipants, comicCon.Participants.Count);
         }
-
+        /// <summary>
+        /// Checks that the discount code has the right format
+        /// </summary>
         [Fact]
         public void CreateDiscountCodeForParticipant()
         {
