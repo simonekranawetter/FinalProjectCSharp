@@ -47,31 +47,16 @@ namespace ComicConRegistration
             WriteLine("Enter Participant information for the ComicCon attendee patch!\n");
 
             Write("First Name:");
-            var firstName = ReadLine();
-            while (string.IsNullOrEmpty(firstName))
-            {
-                ErrorMessage("First Name is required!");
-                firstName = ReadLine();
-            }
-            firstName.Trim();
+            var firstName = ReadLine() ?? "";
+            RequiresInput(firstName, "First Name is required");
 
             Write("Last Name:");
-            var lastName = ReadLine();
-            while (string.IsNullOrEmpty(lastName))
-            {
-                ErrorMessage("Last Name is required!");
-                lastName = ReadLine();
-            }
-            lastName.Trim();
+            var lastName = ReadLine() ?? "";
+            RequiresInput(lastName, "Last Name is required");
 
             Write("Email:");
-            var email = ReadLine();
-            while (string.IsNullOrEmpty(email))
-            {
-                ErrorMessage("Email is required!");
-                email = ReadLine();
-            }
-            email.Trim();
+            var email = ReadLine() ?? "";
+            RequiresInput(email, "Email is required");
 
             Write("Favorite Superhero:");
             var favoriteSuperhero = ReadLine() ?? "not specified";
@@ -135,10 +120,11 @@ namespace ComicConRegistration
         internal ComicCon LoadTextFile()
         {
             WriteLine("Load a copy of the registration previously saved to your computer");
+            WriteLine("If no path is given, a default path to your C drive will be created.");
             ForegroundColor = ConsoleColor.Green;
             WriteLine("Enter your file path:");
-            ResetColor();
-            var path = ReadLine(); //TODO: handle possible error here!
+            ForegroundColor = ConsoleColor.Magenta;
+            var path = ReadLine() ?? @"C:\conregistration.txt";
 
             string[] lines = File.ReadAllLines(path);
 
@@ -166,10 +152,11 @@ namespace ComicConRegistration
         internal string SaveTextFile()
         {
             WriteLine("Save a personal copy of the registration to your computer\n");
+            WriteLine("If no path is given, a default path to your C drive will be created.");
             ForegroundColor = ConsoleColor.Green;
             WriteLine("Please enter a file path:");
-            ResetColor();
-            var path = ReadLine(); //TODO: Handle the null reference here!
+            ForegroundColor = ConsoleColor.Magenta;
+            var path = ReadLine() ?? @"C:\conregistration.txt";
 
             return path;
         }
@@ -198,11 +185,11 @@ namespace ComicConRegistration
         /// <param name="message">Specifies the error message displayed with the error</param>
         /// <returns>The required input after whitespace is removed</returns>
         private static string RequiresInput(string input, string message)
-        {   
+        {
             while (string.IsNullOrEmpty(input))
             {
                 ErrorMessage(message);
-                input = ReadLine(); //TODO: Figure out how to make this work!
+                input = ReadLine() ?? "";
             }
             return input.Trim();
         }
