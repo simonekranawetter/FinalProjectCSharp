@@ -1,10 +1,12 @@
 ﻿using System.Text;
+using static System.Console;
 
 namespace ComicConRegistration
 {
     public class ComicCon
     {
         private List<Participant> _participantList = new List<Participant>();
+
         /// <summary>
         /// Constructor for a list of participants
         /// </summary>
@@ -15,6 +17,7 @@ namespace ComicConRegistration
                 return _participantList;
             }
         }
+
         /// <summary>
         /// Function to add a participant to the list of participants
         /// </summary>
@@ -23,14 +26,25 @@ namespace ComicConRegistration
         {
             _participantList.Add(participant);
         }
+
         /// <summary>
         /// Remove a participant from the list of participants
         /// </summary>
         /// <param name="index">index of the entry you would like to remove</param>
         public void Remove(int index)
         {
-            _participantList.RemoveAt(index);
+            try
+            {
+                _participantList.RemoveAt(index);
+            }
+            catch
+            {
+                ForegroundColor = ConsoleColor.DarkRed;
+                WriteLine("Invalid Input.");
+                ForegroundColor = ConsoleColor.Magenta;
+            }
         }
+
         /// <summary>
         /// Creates a discount code
         /// </summary>
@@ -40,6 +54,7 @@ namespace ComicConRegistration
             var discountCode = Guid.NewGuid();
             return discountCode;
         }
+
         /// <summary>
         /// Saves the list of participants to a text file
         /// </summary>

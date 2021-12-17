@@ -17,7 +17,10 @@ while (runProgram)
             break;
         case 2:
             var index = menu.RemoveParticipant(comicCon.Participants);
-            comicCon.Remove(index);
+            if (index != -1)
+            {
+                comicCon.Remove(index);
+            }
             break;
         case 3:
             menu.ListParticipants(comicCon.Participants);

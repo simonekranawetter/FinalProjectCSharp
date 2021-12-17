@@ -3,7 +3,8 @@
 namespace ComicConRegistration
 {
     internal class Menu
-    {   /// <summary>
+    {   
+        /// <summary>
         /// Gives the user different choices to add, remove and display all participants. Saving and loading a text file and creating a discount code.
         /// </summary>
         /// <returns>Preferred menu choice</returns>
@@ -39,6 +40,7 @@ namespace ComicConRegistration
                 ErrorMessage("Please input a number from 1 - 7 to chose a menu option");
             }
         }
+
         /// <summary>
         /// Asking the user for input to add a participant to the list.
         /// </summary>
@@ -46,28 +48,21 @@ namespace ComicConRegistration
         internal Participant AddParticipant()         {
             WriteLine("Enter Participant information for the ComicCon attendee patch!\n");
 
-            Write("First Name:");
-            var firstName = ReadLine() ?? "";
-            RequiresInput(firstName, "First Name is required");
+            var firstName = RequiresInput("First Name: ", "First Name is required");
+            var lastName = RequiresInput("Last Name: ", "Last Name is required");
+            var email = RequiresInput("Email: ", "Email is required");
 
-            Write("Last Name:");
-            var lastName = ReadLine() ?? "";
-            RequiresInput(lastName, "Last Name is required");
-
-            Write("Email:");
-            var email = ReadLine() ?? "";
-            RequiresInput(email, "Email is required");
-
-            Write("Favorite Superhero:");
+            Write("Favorite Superhero: ");
             var favoriteSuperhero = ReadLine() ?? "not specified";
-            favoriteSuperhero.Trim();
+            favoriteSuperhero = favoriteSuperhero.Trim();
 
-            Write("Favorite Quote:");
+            Write("Favorite Quote: ");
             var favoriteQuote = ReadLine() ?? "All your base are belong to us";
-            favoriteQuote.Trim();
+            favoriteQuote = favoriteQuote.Trim();
 
             return new Participant(firstName, lastName, email, favoriteSuperhero, favoriteQuote);
         }
+
         /// <summary>
         /// Lists the participants entered so far and lets the user pick the index of the desired entry
         /// </summary>
@@ -76,26 +71,32 @@ namespace ComicConRegistration
         internal int RemoveParticipant(List<Participant> participants)
         {
             ListParticipants(participants);
-            WriteLine("Enter the index of the participant you'd like to remove");
+            if (participants.Count == 0)
+            {
+                return -1;
+            }
+
             while (true)
             {
-                var index = ReadLine();
+                WriteLine("Enter the index of the participant you'd like to remove");
 
-                if (!string.IsNullOrEmpty(index))
+                try
                 {
-                    try
+                    var entryIndex = int.Parse(ReadLine() ?? "");
+                    if (entryIndex > participants.Count)
                     {
-                        var entryIndex = int.Parse(index);
+                        return -1;
+                    }
+                    return entryIndex;
 
-                        return entryIndex;
-                    }
-                    catch (Exception)
-                    {
-                    }
+                }
+                catch (Exception)
+                {
                 }
                 ErrorMessage("Enter the number of the entry you would like to remove");
             }
         }
+
         /// <summary>
         /// Printing a list of participants to the console. Only relevant information (Name and email) and an index for easy selection is printed 
         /// </summary>
@@ -113,6 +114,7 @@ namespace ComicConRegistration
                 WriteLine("You haven't added any participants yet");
             }
         }
+
         /// <summary>
         /// Asks the user for the file path to a previously saved copy
         /// </summary>
@@ -145,6 +147,7 @@ namespace ComicConRegistration
 
             return comicCon;
         }
+
         /// <summary>
         /// Asks user to enter a file path to the console
         /// </summary>
@@ -160,6 +163,7 @@ namespace ComicConRegistration
 
             return path;
         }
+
         /// <summary>
         /// Prints a discount code to the console
         /// </summary>
@@ -168,6 +172,7 @@ namespace ComicConRegistration
             WriteLine("Send this discount code to participant if requested");
             WriteLine(ComicCon.CreateDiscountCode());
         }
+
         /// <summary>
         /// Prints a red error message to the console
         /// </summary>
@@ -178,18 +183,27 @@ namespace ComicConRegistration
             WriteLine(message);
             ForegroundColor = ConsoleColor.Magenta;
         }
+
         /// <summary>
         /// Handles the possibility of nullable inputs
         /// </summary>
-        /// <param name="input">Requires the user to enter something</param>
+        /// <param name="prompt">Specifies what the user is expected to input</param>
         /// <param name="message">Specifies the error message displayed with the error</param>
         /// <returns>The required input after whitespace is removed</returns>
-        private static string RequiresInput(string input, string message)
+        private static string RequiresInput(string prompt, string message)
         {
+            bool repeated = false;
+            string input = "";
+
+            Write(prompt);
             while (string.IsNullOrEmpty(input))
             {
-                ErrorMessage(message);
+                if (repeated)
+                {
+                    ErrorMessage(message);
+                }
                 input = ReadLine() ?? "";
+                repeated = true;
             }
             return input.Trim();
         }
