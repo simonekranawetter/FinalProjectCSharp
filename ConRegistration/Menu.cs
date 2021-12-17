@@ -124,24 +124,30 @@ namespace ComicConRegistration
             WriteLine("Load a copy of the registration previously saved to your computer");
             ForegroundColor = ConsoleColor.Green;
             var path = RequiresInput("Please enter a valid file path:", "Not a valid file path");
-
-            string[] lines = File.ReadAllLines(path);
-
             var comicCon = new ComicCon();
 
-            foreach (var line in lines)
+            
+            try
             {
-                var input = line.Split(' ');
-                var firstName = input[0];
-                var lastName = input[1];
-                var email = input[2];
-                var favoriteSuperhero = input[3];
-                var favoriteQuote = input[4];
+                string[] lines = File.ReadAllLines(path);
 
-                var participant = new Participant(firstName, lastName, email, favoriteSuperhero, favoriteQuote);
-                comicCon.AddParticipant(participant);
+                foreach (var line in lines)
+                {
+                    var input = line.Split(' ');
+                    var firstName = input[0];
+                    var lastName = input[1];
+                    var email = input[2];
+                    var favoriteSuperhero = input[3];
+                    var favoriteQuote = input[4];
+
+                    var participant = new Participant(firstName, lastName, email, favoriteSuperhero, favoriteQuote);
+                    comicCon.AddParticipant(participant);
+                }
             }
-
+            catch (Exception)
+            {
+                WriteLine("There is no saved file!");
+            }
             return comicCon;
         }
 

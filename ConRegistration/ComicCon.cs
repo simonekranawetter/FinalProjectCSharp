@@ -69,7 +69,16 @@ namespace ComicConRegistration
             }
 
             var inputToSave = sb.ToString();
-            File.WriteAllText(path, inputToSave);
+            try
+            {
+                File.WriteAllText(path, inputToSave);
+                WriteLine($"\nFile saved at:   {path}");
+            }
+            catch (Exception)
+            {
+                ForegroundColor= ConsoleColor.DarkRed;
+                WriteLine("Filepath is invalid! File not saved!");
+            }
         }
     }
 }
