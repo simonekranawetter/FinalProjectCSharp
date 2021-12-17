@@ -122,11 +122,8 @@ namespace ComicConRegistration
         internal ComicCon LoadTextFile()
         {
             WriteLine("Load a copy of the registration previously saved to your computer");
-            WriteLine("If no path is given, a default path to your C drive will be created.");
             ForegroundColor = ConsoleColor.Green;
-            WriteLine("Enter your file path:");
-            ForegroundColor = ConsoleColor.Magenta;
-            var path = ReadLine() ?? @"C:\conregistration.txt";
+            var path = RequiresInput("Please enter a valid file path:", "Not a valid file path");
 
             string[] lines = File.ReadAllLines(path);
 
@@ -155,11 +152,9 @@ namespace ComicConRegistration
         internal string SaveTextFile()
         {
             WriteLine("Save a personal copy of the registration to your computer\n");
-            WriteLine("If no path is given, a default path to your C drive will be created.");
+
             ForegroundColor = ConsoleColor.Green;
-            WriteLine("Please enter a file path:");
-            ForegroundColor = ConsoleColor.Magenta;
-            var path = ReadLine() ?? @"C:\conregistration.txt";
+            var path = RequiresInput("Please enter a valid file path:", "Not a valid file path");
 
             return path;
         }
